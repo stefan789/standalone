@@ -34,5 +34,4 @@ class Degausser():
         print "abortWaveForm called"
         if self.mythread:
             self.mythread.stop()
-            self.mythread.__del__()
 

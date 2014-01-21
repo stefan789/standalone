@@ -51,9 +51,9 @@ class WaveformThread(threading.Thread):
         self.CHK(nidaq.DAQmxStartTask( self.taskHandle ))
         ret_bool = bool32()
         self.CHK(nidaq.DAQmxIsTaskDone( self.taskHandle, ctypes.byref(ret_bool)))
-        while( ret_bool.value == 0):
+        while( ret_bool.value == 0 ):
             time.sleep(2)
-            self.CHK(nidaq.DAQmxIsTaskDone( self.taskHandle, ctypes.byref(ret_bool)))
+            nidaq.DAQmxIsTaskDone( self.taskHandle, ctypes.byref(ret_bool))
             #print ret_bool.value
         time.sleep(2)
         

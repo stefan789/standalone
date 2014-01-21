@@ -3,12 +3,33 @@ import copy
 import collections
 import controldeg
 import json
+import threading
+
+class WorkerThread(threading.Thread):
+    """ 
+    dogaussing in own thread so that gui does not lock
+    """
+    def __init__(self, coils):
+        print "worker thread init"
+        threading.Thread.__init__(self)
+        self.running = 1
+        self.c = controldeg.controldegauss(coils)
+
+    def run(self):
+        print "thread running degaussing started"
+        if self.running == 1:
+            self.c.degauss()
+
+    def abort(self):
+        print "worker thread abort called"
+        self.c.abort()
+        self.running = 0
+
 
 class control():
     def __init__(self, klasse):
         self.gui = klasse
         self.main = klasse.mainwin
-
 
         # bind buttons in mainwindow
         self.main.Bind(wx.EVT_BUTTON, self.onStart, self.main.startbtn)
@@ -25,7 +46,7 @@ class control():
         self.usedcoils = copy.deepcopy(self.coils)
         self.tmpcoils = copy.deepcopy(self.coils)
 
-        self.c = None
+        self.worker = None
 
     def get_coil_from_file(self, dictfile):
 
@@ -77,22 +98,32 @@ class control():
         """
         dialog to abort degaussing
         """
-        dlg = wx.MessageDialog(self.main.panel, "Do you really want to quit the app?", "Confirm Exit", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
-        result = dlg.ShowModal()
-        if result == wx.ID_OK:
-            if self.c:
-                print "in if, abort waveform"
-                self.c.dega.abortWaveform() 
-            self.c = None
-            self.main.Destroy()
-        dlg.Destroy()
+        if not self.worker:
+            dlg = wx.MessageDialog(self.main.panel, "Do you really want to quit the app?", "Confirm Exit", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
+            result = dlg.ShowModal()
+            if result == wx.ID_OK:
+                self.main.Destroy()
+            dlg.Destroy()
+
+        elif self.worker:
+            dlg = wx.MessageDialog(self.main.panel, "Interrupt degaussing?",
+            "Confirm interrupt", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
+            result = dlg.ShowModal()
+            if result == wx.ID_OK:
+                self.worker.abort()
+                self.worker = None
+            dlg.Destroy()
+
 
     def onStart(self, e):
         """
-        begins degaussing
+        begins degaussing by instanciating and starting workerthread
         """
-        self.c = controldeg.controldegauss(self.usedcoils)
-        self.c.degauss()
+        print "start pressed"
+        if not self.worker:
+            print "worker not running, started"
+            self.worker = WorkerThread(self.usedcoils)
+            self.worker.start()
 
         # bind timers and start
         #self.main.Bind(wx.EVT_TIMER, self.on_overalltimer, self.overalltimer, 999)

@@ -1,7 +1,7 @@
 import wx
 import copy
 import collections
-import controldeg2
+import controldeg
 import json
 
 class control():
@@ -91,7 +91,7 @@ class control():
         """
         begins degaussing
         """
-        self.c = controldeg2.controldegauss(self.usedcoils)
+        self.c = controldeg.controldegauss(self.usedcoils)
         self.c.degauss()
 
         # bind timers and start

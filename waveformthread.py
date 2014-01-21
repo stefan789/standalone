@@ -60,7 +60,6 @@ class WaveformThread(threading.Thread):
     def stop(self):
         self.running = False
         nidaq.DAQmxStopTask( self.taskHandle )
-        nidaq.DAQmxClearTask( self.taskHandle )
     
     def __del__(self):
         nidaq.DAQmxClearTask( self.taskHandle )

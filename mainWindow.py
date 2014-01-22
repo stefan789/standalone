@@ -72,7 +72,14 @@ class mainWindow(wx.Frame):
         self.currentbar.SetValue(70)
         progressbag.Add(self.currentbar, pos = (5,0), flag = wx.EXPAND)
         progressbag.Add((-1,-1), pos = (6,0))
-        progressbag.Add((-1,182), pos = (7,0))
+        progressbag.Add((-1,104), pos = (7,0))
+
+        self.statusLabel = wx.StaticText(self.panel, wx.ID_ANY, "Status")
+        progressbag.Add(self.statusLabel, pos = (8,0))
+        self.status = wx.TextCtrl(self.panel,5, "", wx.Point(20,20),
+                wx.Size(380,90),
+                wx.TE_MULTILINE | wx.TE_READONLY)
+        progressbag.Add(self.status, pos = (9,0))
 
 
         # add them to their boxes

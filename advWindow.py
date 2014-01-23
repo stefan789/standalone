@@ -3,20 +3,20 @@ import advDegaPanel
 import advCoilPanel
 
 class advWindow(wx.Frame):
-    def __init__(self, parent, coils):
+    def __init__(self, parent):
         wx.Frame.__init__(self, parent, wx.ID_ANY, "Advanced Settings", size =(400,300))
-        self.SetSizeHints(400,330,800,600)
+        self.SetSizeHints(400,350,800,600)
         panel = wx.Panel(self, wx.ID_ANY)
 
         topSizer = wx.BoxSizer(wx.VERTICAL)
         
-        nb = wx.Notebook(panel)
-        self.degaP = advDegaPanel.advDegaPanel(nb, coils)
-        nb.AddPage(self.degaP.panel, "Parameters  ")
-        self.coilP = advCoilPanel.advCoilPanel(nb)
-        nb.AddPage(self.coilP.panel, "Coils  ")
+        self.nb = wx.Notebook(panel)
+        self.coilP = advCoilPanel.advCoilPanel(self.nb)
+        self.nb.AddPage(self.coilP.panel, "Coils  ")
+        self.degaP = advDegaPanel.advDegaPanel(self.nb)
+        self.nb.AddPage(self.degaP.panel, "Parameters  ")
 
-        topSizer.Add(nb, flag = wx.EXPAND|wx.ALL, border = 5)
+        topSizer.Add(self.nb, flag = wx.EXPAND|wx.ALL, border = 5)
 
         # create buttons and put them buttonsizer, add buttonsizer to topsizer
         self.resetbutton = wx.Button(panel, label = "Reset", size = (100,30))
@@ -34,13 +34,8 @@ class advWindow(wx.Frame):
         self.Layout()
 
 if __name__ == '__main__':
-    import json
-    import collections
     app = wx.PySimpleApp()
-    with open("coils.dict", "r") as f:
-        coils = json.loads(f.read(), object_pairs_hook=collections.OrderedDict)
-
-    frame = advWindow(None, coils)
+    frame = advWindow(None)
     frame.Show()
     app.MainLoop()
 

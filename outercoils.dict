@@ -1,5 +1,5 @@
 {
-    "I-X": {
+    "A-X": {
         "Amp": 1,
         "Freq": 10,
         "Dur": 10,
@@ -7,7 +7,7 @@
         "RelayPort": 1,
         "VoltageDivider": 3
     },
-    "I-Z": {
+    "A-Z": {
         "Amp": 2,
         "Freq": 10,
         "Dur": 10,
@@ -15,7 +15,7 @@
         "RelayPort": 2,
         "VoltageDivider": 3
     },
-    "I-Y": {
+    "A-Y": {
         "Amp": 3,
         "Freq": 10,
         "Dur": 10,

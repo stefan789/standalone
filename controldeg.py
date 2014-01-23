@@ -3,6 +3,7 @@ import digiportlib as digilib
 import collections
 import time
 import copy
+from wx.lib.pubsub import Publisher as pub
 
 class controldegauss():
     def __init__(self, coils):
@@ -34,7 +35,7 @@ class controldegauss():
             
                 # hier prints mit aktuellem status, bzw setlabel fuer ein textfeld
                 self.dega.createNpWaveform(amp, freq, self.offset, dur, keep, 20000)
-                print "waveform created"
+                pub.sendMessage("statusupdate", "Waveform created")
                 self.swc.alloff()
                 print "all coils off"
                 time.sleep(0.5)

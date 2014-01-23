@@ -93,7 +93,6 @@ class control():
                 self.count = 0
                 self.currenttimer.Start(100)
 
-
     def onAbort(self, e):
         """
         dialog to abort degaussing

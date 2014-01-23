@@ -96,7 +96,6 @@ class mainWindow(wx.Frame):
         #self.SetSizeHints(800, 600, 800, 600)
 
         self.Centre()
-        #self.Show()
 
 if __name__ == '__main__':
     app = wx.PySimpleApp()

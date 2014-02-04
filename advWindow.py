@@ -34,7 +34,7 @@ class advWindow(wx.Frame):
         self.Layout()
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = advWindow(None)
     frame.Show()
     app.MainLoop()

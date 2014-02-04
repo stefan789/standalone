@@ -2,6 +2,7 @@
 import time
 import numpy
 import matplotlib.pyplot as plt
+from wx.lib.pubsub import pub
 import waveformthread as wft
 
 class Degausser():
@@ -31,7 +32,6 @@ class Degausser():
         self.mythread = None
 
     def abortWaveform(self):
-        print "abortWaveForm called"
         if self.mythread:
             self.mythread.stop()
 

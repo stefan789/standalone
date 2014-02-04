@@ -4,7 +4,8 @@ import wx
 import copy
 import collections
 
-from wx.lib.pubsub import Publisher as pub
+#from wx.lib.pubsub import setupkwargs
+from wx.lib.pubsub import pub
 
 class Controller:
     def __init__(self, app):
@@ -17,14 +18,15 @@ class Controller:
         self.view.mainWin.advbtn.Bind(wx.EVT_BUTTON, self.AdvBtn)
 
         pub.subscribe(self.CoilsChanged, "COILCHANGE")
-        pub.subscribe(self.statusUpdate, "statusupdate")
+        pub.subscribe(self.statusUpdate, "status.update")
+        pub.subscribe(self.degaussprogress, "degauss.progress")
 
     def setCoils(self, dictfile):
         self.model.set_coils_from_file(str(dictfile))
 
     def AdvBtn(self, e):
-        self.model.tmpcoils = copy.deepcopy(self.model.coils)
-        self.view.createAdvWin(self.model.tmpcoils)
+        self.tmpcoils = copy.deepcopy(self.model.coils)
+        self.view.createAdvWin(self.tmpcoils)
         self.view.advWin.okbutton.Bind(wx.EVT_BUTTON, self.onAdvOk)
         self.view.advWin.resetbutton.Bind(wx.EVT_BUTTON, self.onAdvReset)
         self.view.advWin.cancelbutton.Bind(wx.EVT_BUTTON, self.onAdvCancel)
@@ -46,36 +48,34 @@ class Controller:
         self.model.degauss()
 
     def AbortBtn(self, e):
-        # check here if degaussworker running
-        # if not worker:
-        if self.view.confirmAbort() == wx.ID_OK:
-            self.view.mainWin.Destroy()
-
-        #if worker:
-        # self.model.interruptdegauss()
-        #
-
+        if self.model.degaussingcontrol.is_alive():
+            if self.view.confirmAbort() == wx.ID_OK:
+                self.model.interruptdegauss()
+        else:
+            if self.view.confirmAbort() == wx.ID_OK:
+                self.view.mainWin.Destroy()
+            
     def onAdvOk(self, e):
-        self.model.coils = copy.deepcopy(self.model.tmpcoils)
+        self.model.coils = copy.deepcopy(self.tmpcoils)
         self.view.advWin.Destroy()
 
     def onAdvReset(self, e):
-        self.model.tmpcoils = copy.deepcopy(self.model.coils)
+        self.tmpcoils = copy.deepcopy(self.model.coils)
         choice = self.view.advWin.degaP.coilselector.GetValue()
-        self.view.advWin.degaP.textAmp.SetValue(str(self.model.tmpcoils[str(choice)]["Amp"]))
-        self.view.advWin.degaP.textFreq.SetValue(str(self.model.tmpcoils[str(choice)]["Freq"]))
-        self.view.advWin.degaP.textDur.SetValue(str(self.model.tmpcoils[str(choice)]["Dur"]))
-        self.view.advWin.degaP.textKeep.SetValue(str(self.model.tmpcoils[str(choice)]["Keep"]))
+        self.view.advWin.degaP.textAmp.SetValue(str(self.tmpcoils[str(choice)]["Amp"]))
+        self.view.advWin.degaP.textFreq.SetValue(str(self.tmpcoils[str(choice)]["Freq"]))
+        self.view.advWin.degaP.textDur.SetValue(str(self.tmpcoils[str(choice)]["Dur"]))
+        self.view.advWin.degaP.textKeep.SetValue(str(self.tmpcoils[str(choice)]["Keep"]))
 
     def onAdvCancel(self, e):
         self.view.advWin.Destroy()
 
     def coilselection(self, e):
         choice = self.view.advWin.degaP.coilselector.GetValue()
-        self.view.advWin.degaP.textAmp.SetValue(str(self.model.tmpcoils[str(choice)]["Amp"]))
-        self.view.advWin.degaP.textFreq.SetValue(str(self.model.tmpcoils[str(choice)]["Freq"]))
-        self.view.advWin.degaP.textDur.SetValue(str(self.model.tmpcoils[str(choice)]["Dur"]))
-        self.view.advWin.degaP.textKeep.SetValue(str(self.model.tmpcoils[str(choice)]["Keep"]))
+        self.view.advWin.degaP.textAmp.SetValue(str(self.tmpcoils[str(choice)]["Amp"]))
+        self.view.advWin.degaP.textFreq.SetValue(str(self.tmpcoils[str(choice)]["Freq"]))
+        self.view.advWin.degaP.textDur.SetValue(str(self.tmpcoils[str(choice)]["Dur"]))
+        self.view.advWin.degaP.textKeep.SetValue(str(self.tmpcoils[str(choice)]["Keep"]))
 
     def radioselection(self, e):
         state1 = self.view.advWin.coilP.rb1.GetValue()
@@ -97,42 +97,45 @@ class Controller:
                     self.view.showCustomFileAlert()
                 else:
                     self.setCoils(str(fil))
-                    pub.sendMessage("statusupdate", str(fil))
+                    pub.sendMessage("status.update", str(fil), extra = None)
             elif self.view.advWin.coilP.rb1.GetValue():
-                pub.sendMessage("statusupdate", "Inner coils selected")
+                pub.sendMessage("status.update", status="Inner coils selected")
                 self.setCoils("coils.dict")
             elif self.view.advWin.coilP.rb2.GetValue():
-                pub.sendMessage("statusupdate", "Outer coils selected")
+                pub.sendMessage("status.update", status="Outer coils selected")
                 self.setCoils("outercoils.dict")
             elif self.view.advWin.coilP.rb3.GetValue():
-                pub.sendMessage("statusupdate", "All coils selected")
+                pub.sendMessage("status.update", status="All coils selected")
                 self.setCoils("coils.dict")
             else:
                 # Fehlerfall
                 pass
-        self.model.tmpcoils = copy.deepcopy(self.model.coils)
-        self.view.setCoilSelectorList(self.model.tmpcoils)
+            self.tmpcoils = copy.deepcopy(self.model.coils)
+            self.view.setCoilSelectorList(self.tmpcoils)
 
 
     def changeAmp(self, e):
         choice = self.view.advWin.degaP.coilselector.GetValue()
-        self.model.tmpcoils[str(choice)]["Amp"] = self.view.advWin.degaP.textAmp.GetValue()
+        self.tmpcoils[str(choice)]["Amp"] = self.view.advWin.degaP.textAmp.GetValue()
     
     def changeFreq(self, e):
         choice = self.view.advWin.degaP.coilselector.GetValue()
-        self.model.tmpcoils[str(choice)]["Freq"] = self.view.advWin.degaP.textFreq.GetValue()
+        self.tmpcoils[str(choice)]["Freq"] = self.view.advWin.degaP.textFreq.GetValue()
 
     def changeDur(self, e):
         choice = self.view.advWin.degaP.coilselector.GetValue()
-        self.model.tmpcoils[str(choice)]["Dur"] = self.view.advWin.degaP.textDur.GetValue()
+        self.tmpcoils[str(choice)]["Dur"] = self.view.advWin.degaP.textDur.GetValue()
     
     def changeKeep(self, e):
         choice = self.view.advWin.degaP.coilselector.GetValue()
-        self.model.tmpcoils[str(choice)]["Keep"] = self.view.advWin.degaP.textKeep.GetValue()
+        self.tmpcoils[str(choice)]["Keep"] = self.view.advWin.degaP.textKeep.GetValue()
     
-    def statusUpdate(self, message):
-        self.view.mainWin.status.AppendText(message.data + "\n")
+    def statusUpdate(self, status, extra=None):
+        self.view.mainWin.status.AppendText(str(status) + "\n")
 
-    def CoilsChanged(self, message):
-        #self.setCoils(message.data)
-        pass
+    def CoilsChanged(self, status):
+        self.view.mainWin.status.AppendText("Coils set" + "\n")
+    
+    def degaussprogress(self, status, extra=None):
+        self.view.mainWin.status.AppendText(str(status) + "\n")
+

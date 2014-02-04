@@ -3,7 +3,8 @@ import digiportlib as digilib
 import collections
 import time
 import copy
-from wx.lib.pubsub import Publisher as pub
+
+from wx.lib.pubsub import pub
 
 class controldegauss():
     def __init__(self, coils):
@@ -25,7 +26,6 @@ class controldegauss():
         self._running = 1
 
     def degauss(self):
-        print "degauss called"
         for coil in self.degcoils:
             if self._running == 1:
                 amp = float(self.degcoils[coil]['Amp'])
@@ -35,26 +35,28 @@ class controldegauss():
             
                 # hier prints mit aktuellem status, bzw setlabel fuer ein textfeld
                 self.dega.createNpWaveform(amp, freq, self.offset, dur, keep, 20000)
-                pub.sendMessage("statusupdate", "Waveform created")
+                pub.sendMessage("status.update", status = "Waveform parameters: %s" % str("A = " + str(amp) + " V, Freq = " + str(freq) + " Hz, Dur = " + str(dur) + " s, keep = " + str(keep) + " s"))
                 self.swc.alloff()
-                print "all coils off"
+                pub.sendMessage("status.update", status = "all coils off")
                 time.sleep(0.5)
                 self.vd.setnr(self.degcoils[coil]["VoltageDivider"])
-                print "Voltage Divider set to %s" % str(self.degcoils[coil]["VoltageDivider"])
+                pub.sendMessage("status.update", status = "Voltage Divider set to %s" % str(self.degcoils[coil]["VoltageDivider"]))
                 self.swc.activate(self.degcoils[coil]["RelayPort"])
-                print "Coil %s activated" %str(self.degcoils[coil]["RelayPort"])
+                pub.sendMessage("status.update", status = "Coil %s activated" %str(self.degcoils[coil]["RelayPort"]))
                 time.sleep(1)
                 self.dega.playWaveform()
-                print "waveform played"
+                pub.sendMessage("staus.update", status =  "waveform played")
                 self.swc.alloff()
+                pub.sendMessage("status.update", status = "all coils off")
                 time.sleep(0.5)
                 self.vd.resetall()
+                pub.sendMessage("status.update", status = "Voltagedivider reset")
             else:
                 self.swc.alloff()
                 self.vd.resetall()
+        pub.sendMessage("status.update", status = "DONE")
 
     def abort(self):
-        print "controldeg abort called"
         self.dega.abortWaveform()
         self._running = 0
 

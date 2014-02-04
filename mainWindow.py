@@ -98,7 +98,7 @@ class mainWindow(wx.Frame):
         self.Centre()
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = mainWindow(None)
     frame.Show()
     app.MainLoop()

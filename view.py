@@ -26,6 +26,11 @@ class View():
         result = dlg.ShowModal()
         return result
 
+    def confirmInterrupt(self):
+        dlg = wx.MessageDialog(self.mainWin, "Do you really want to interrupt degaussing?", "Confirm", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
+        result = dlg.ShowModal()
+        return result
+
     def showAdvTextLine(self, state):
         if state:
             self.advWin.coilP.text.Show()

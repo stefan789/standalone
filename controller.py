@@ -66,7 +66,7 @@ class Controller:
 
     def AbortBtn(self, e):
         if self.model.degaussingcontrol.is_alive():
-            if self.view.confirmAbort() == wx.ID_OK:
+            if self.view.confirmInterrupt() == wx.ID_OK:
                 self.overalltimer.Stop()
                 self.model.interruptdegauss()
         else:

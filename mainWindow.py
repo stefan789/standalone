@@ -55,30 +55,28 @@ class mainWindow(wx.Frame):
 
         
         # create overall progress bar and add to progressbag
-        self.overalllabel = wx.StaticText(self.panel, wx.ID_ANY, "Overall progress", size=(-1,-1), style=wx.ALIGN_BOTTOM)
-        progressbag.Add(self.overalllabel, pos = (1,0), flag = wx.ALIGN_LEFT|wx.EXPAND)
+        self.overalllabel = wx.StaticText(self.panel, wx.ID_ANY, "Progress", size=(-1,-1), style=wx.ALIGN_BOTTOM)
+        progressbag.Add((-1,45), pos = (1,0))
+        progressbag.Add(self.overalllabel, pos = (2,0), flag = wx.ALIGN_LEFT|wx.EXPAND)
         progressbag.AddGrowableRow(1)
-        self.overallbar = wx.Gauge(self.panel, range = 100, size = (-1,-1))
-        progressbag.Add(self.overallbar, pos = (2,0), flag = wx.EXPAND)
+        self.overallbar = wx.Gauge(self.panel, range = 100, size = (-1,30))
+        progressbag.Add(self.overallbar, pos = (3,0), flag = wx.EXPAND)
 
         # spacer in between progress bars
-        progressbag.Add((-1,40), pos = (3,0), flag = wx.EXPAND)
+        progressbag.Add((-1,-1), pos = (4,0), flag = wx.EXPAND)
         # create overall progress bar and add to progressbag
-        self.currentlabel = wx.StaticText(self.panel, wx.ID_ANY, "Current progress")
-        progressbag.Add(self.currentlabel, pos = (4,0), flag = wx.ALIGN_LEFT)
+        progressbag.Add((-1,-1), pos = (5,0), flag = wx.ALIGN_LEFT)
         progressbag.AddGrowableRow(4)
-        self.currentbar = wx.Gauge(self.panel, range = 100, size = (-1,-1))
-        self.currentbar.SetValue(70)
-        progressbag.Add(self.currentbar, pos = (5,0), flag = wx.EXPAND)
-        progressbag.Add((-1,-1), pos = (6,0))
-        progressbag.Add((-1,104), pos = (7,0))
+        progressbag.Add((-1,-1), pos = (6,0), flag = wx.EXPAND)
+        progressbag.Add((-1,-1), pos = (7,0))
+        progressbag.Add((-1,128), pos = (8,0))
 
         self.statusLabel = wx.StaticText(self.panel, wx.ID_ANY, "Status")
-        progressbag.Add(self.statusLabel, pos = (8,0))
+        progressbag.Add(self.statusLabel, pos = (9,0))
         self.status = wx.TextCtrl(self.panel,5, "", wx.Point(20,20),
                 wx.Size(380,90),
                 wx.TE_MULTILINE | wx.TE_READONLY)
-        progressbag.Add(self.status, pos = (9,0))
+        progressbag.Add(self.status, pos = (10,0))
 
 
         # add them to their boxes

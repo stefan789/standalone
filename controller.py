@@ -64,15 +64,15 @@ class Controller:
         if self.totalcount == self.totaldur*10:
             self.overalltimer.Stop()
 
-    def AbortBtn(self, e):
-        if self.model.degaussingcontrol.is_alive():
-            if self.view.confirmInterrupt() == wx.ID_OK:
-                self.overalltimer.Stop()
-                self.model.interruptdegauss()
-        else:
+    def AbortBtn(self, e): 
+        if not self.model.degaussingcontrol:
             if self.view.confirmAbort() == wx.ID_OK:
                 self.overalltimer.Stop()
                 self.view.mainWin.Destroy()
+        elif self.model.degaussingcontrol.is_alive():
+            if self.view.confirmInterrupt() == wx.ID_OK:
+                self.overalltimer.Stop()
+                self.model.interruptdegauss()
             
     def onAdvOk(self, e):
         self.model.coils = copy.deepcopy(self.tmpcoils)

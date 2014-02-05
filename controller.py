@@ -17,6 +17,9 @@ class Controller:
         self.view.mainWin.abortbtn.Bind(wx.EVT_BUTTON, self.AbortBtn)
         self.view.mainWin.advbtn.Bind(wx.EVT_BUTTON, self.AdvBtn)
 
+        self.overalltimer = wx.Timer()
+        self.overalltimer.Bind(wx.EVT_TIMER, self.OnTimer)
+
         pub.subscribe(self.CoilsChanged, "COILCHANGE")
         pub.subscribe(self.statusUpdate, "status.update")
         pub.subscribe(self.degaussprogress, "degauss.progress")
@@ -45,7 +48,19 @@ class Controller:
                 self.nbpagechange)
 
     def StartBtn(self, e):
+        self.totalcount = 0
+        self.totaldur = 0
+        for coil in self.model.coils:
+            if coil != 'All' and coil != 'Device' and coil != 'Offset':
+                self.totaldur += self.model.coils[coil]['Dur'] + self.model.coils[coil]['Keep'] + 3
+        pub.sendMessage('status.update', status="Total duration %s" % str(self.totaldur) + " s" )
+        self.view.mainWin.overallbar.SetRange(self.totaldur*10)
+        self.overalltimer.Start(100)
         self.model.degauss()
+
+    def OnTimer(self, event):
+        self.totalcount += 1
+        self.view.mainWin.overallbar.SetValue(self.totalcount)
 
     def AbortBtn(self, e):
         if self.model.degaussingcontrol.is_alive():

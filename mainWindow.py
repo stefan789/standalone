@@ -59,7 +59,6 @@ class mainWindow(wx.Frame):
         progressbag.Add(self.overalllabel, pos = (1,0), flag = wx.ALIGN_LEFT|wx.EXPAND)
         progressbag.AddGrowableRow(1)
         self.overallbar = wx.Gauge(self.panel, range = 100, size = (-1,-1))
-        self.overallbar.SetValue(20)
         progressbag.Add(self.overallbar, pos = (2,0), flag = wx.EXPAND)
 
         # spacer in between progress bars

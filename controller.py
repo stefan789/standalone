@@ -10,7 +10,7 @@ from wx.lib.pubsub import pub
 class Controller:
     def __init__(self, app):
         self.model = model.Model()
-        self.model.set_coils_from_file("coils.dict")
+        self.model.set_coils_from_file("innercoils.dict")
         self.view = view.View(None)
 
         self.view.mainWin.startbtn.Bind(wx.EVT_BUTTON, self.StartBtn)
@@ -52,7 +52,7 @@ class Controller:
         self.totaldur = 0
         for coil in self.model.coils:
             if coil != 'All' and coil != 'Device' and coil != 'Offset':
-                self.totaldur += self.model.coils[coil]['Dur'] + self.model.coils[coil]['Keep'] + 3
+                self.totaldur += int(self.model.coils[coil]['Dur']) + int(self.model.coils[coil]['Keep']) + int(3)
         pub.sendMessage('status.update', status="Total duration %s" % str(self.totaldur) + " s" )
         self.view.mainWin.overallbar.SetRange(self.totaldur*10)
         self.overalltimer.Start(100)
@@ -61,13 +61,17 @@ class Controller:
     def OnTimer(self, event):
         self.totalcount += 1
         self.view.mainWin.overallbar.SetValue(self.totalcount)
+        if self.totalcount == self.totaldur*10:
+            self.overalltimer.Stop()
 
     def AbortBtn(self, e):
         if self.model.degaussingcontrol.is_alive():
             if self.view.confirmAbort() == wx.ID_OK:
+                self.overalltimer.Stop()
                 self.model.interruptdegauss()
         else:
             if self.view.confirmAbort() == wx.ID_OK:
+                self.overalltimer.Stop()
                 self.view.mainWin.Destroy()
             
     def onAdvOk(self, e):
@@ -115,13 +119,13 @@ class Controller:
                     pub.sendMessage("status.update", str(fil), extra = None)
             elif self.view.advWin.coilP.rb1.GetValue():
                 pub.sendMessage("status.update", status="Inner coils selected")
-                self.setCoils("coils.dict")
+                self.setCoils("innercoils.dict")
             elif self.view.advWin.coilP.rb2.GetValue():
                 pub.sendMessage("status.update", status="Outer coils selected")
                 self.setCoils("outercoils.dict")
             elif self.view.advWin.coilP.rb3.GetValue():
                 pub.sendMessage("status.update", status="All coils selected")
-                self.setCoils("coils.dict")
+                self.setCoils("allcoils.dict")
             else:
                 # Fehlerfall
                 pass

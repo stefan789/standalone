@@ -24,8 +24,11 @@ class Controller:
         pub.subscribe(self.statusUpdate, "status.update")
         pub.subscribe(self.degaussprogress, "degauss.progress")
 
-    def setCoils(self, dictfile):
-        self.model.set_coils_from_file(str(dictfile))
+    def setModelCoils(self, coils):
+        self.model.setCoils(coils)
+
+    def setModelCoilsfromfile(self, dictfile):
+        self.model.set_coils_from_file(dictfile)
 
     def AdvBtn(self, e):
         self.tmpcoils = copy.deepcopy(self.model.coils)
@@ -73,9 +76,14 @@ class Controller:
             if self.view.confirmInterrupt() == wx.ID_OK:
                 self.overalltimer.Stop()
                 self.model.interruptdegauss()
+        else:
+            if self.view.confirmAbort() == wx.ID_OK:
+                self.overalltimer.Stop()
+                self.view.mainWin.Destroy()
+
             
     def onAdvOk(self, e):
-        self.model.coils = copy.deepcopy(self.tmpcoils)
+        self.setModelCoils(self.tmpcoils)
         self.view.advWin.Destroy()
 
     def onAdvReset(self, e):
@@ -115,17 +123,17 @@ class Controller:
                     self.view.advWin.nb.SetSelection(0)
                     self.view.showCustomFileAlert()
                 else:
-                    self.setCoils(str(fil))
+                    self.setModelCoilsfromfile(str(fil))
                     pub.sendMessage("status.update", str(fil), extra = None)
             elif self.view.advWin.coilP.rb1.GetValue():
                 pub.sendMessage("status.update", status="Inner coils selected")
-                self.setCoils("innercoils.dict")
+                self.setModelCoilsfromfile("innercoils.dict")
             elif self.view.advWin.coilP.rb2.GetValue():
                 pub.sendMessage("status.update", status="Outer coils selected")
-                self.setCoils("outercoils.dict")
+                self.setModelCoilsfromfile("outercoils.dict")
             elif self.view.advWin.coilP.rb3.GetValue():
                 pub.sendMessage("status.update", status="All coils selected")
-                self.setCoils("allcoils.dict")
+                self.setModelCoilsfromfile("allcoils.dict")
             else:
                 # Fehlerfall
                 pass

@@ -2,7 +2,7 @@ import wx
 
 class mainWindow(wx.Frame):
     def __init__(self, parent):
-        wx.Frame.__init__(self, None, wx.ID_ANY, 'Frame', pos=(0,0),
+        wx.Frame.__init__(self, None, wx.ID_ANY, 'Degaussing Tool', pos=(0,0),
                 size=wx.DisplaySize())
 
 #        self.__initMenu__()

@@ -29,10 +29,14 @@ class Model():
         self.coils = None
         self.degaussingcontrol = None
 
+    def setCoils(self, coildict):
+        self.coils = coildict
+
     def set_coils_from_file(self, dictfile):
         with open(str(dictfile), "r") as f:
-            self.coils = json.loads(f.read(), object_pairs_hook =
+            coils = json.loads(f.read(), object_pairs_hook =
                     collections.OrderedDict)
+            self.coils = coils
             pub.sendMessage("COILCHANGE", status=self.coils)
     
     def degauss(self):

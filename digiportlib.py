@@ -55,10 +55,10 @@ class SwitchCoil():
         curstate = self.di.read()
         if 1 in curstate:
             curon = np.where(curstate==1)[0]
-            print curon
+            #print curon
             for a in curon:
                 self.do.switch(a)
-        print self.di.read()
+        #print self.di.read()
 
     def activate(self, nr):
         if nr > self.nrchans-1:
@@ -75,5 +75,5 @@ class SwitchCoil():
                 pass
             if curstate[nr] == 0:
                  self.do.switch(nr)
-            print self.di.read()
+            #print self.di.read()
 

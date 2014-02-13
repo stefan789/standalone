@@ -3,6 +3,7 @@ import view
 import wx
 import copy
 import collections
+from datetime import datetime
 
 #from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
@@ -16,6 +17,7 @@ class Controller:
         self.view.mainWin.startbtn.Bind(wx.EVT_BUTTON, self.StartBtn)
         self.view.mainWin.abortbtn.Bind(wx.EVT_BUTTON, self.AbortBtn)
         self.view.mainWin.advbtn.Bind(wx.EVT_BUTTON, self.AdvBtn)
+        self.view.mainWin.saveStatus.Bind(wx.EVT_CHECKBOX, self.checkstatus)
 
         self.overalltimer = wx.Timer()
         self.overalltimer.Bind(wx.EVT_TIMER, self.OnTimer)
@@ -51,11 +53,12 @@ class Controller:
                 self.nbpagechange)
 
     def StartBtn(self, e):
+        pub.sendMessage('status.update', status="Started: %s" % datetime.now().strftime("%d.%m.%Y - %X"))
         self.totalcount = 0
-        self.totaldur = 0
+        self.totaldur = 2
         for coil in self.model.coils:
             if coil != 'All' and coil != 'Device' and coil != 'Offset':
-                self.totaldur += int(self.model.coils[coil]['Dur']) + int(self.model.coils[coil]['Keep']) + int(3)
+                self.totaldur += int(self.model.coils[coil]['Dur']) + int(self.model.coils[coil]['Keep']) + int(4)
         pub.sendMessage('status.update', status="Total duration %s" % str(self.totaldur) + " s" )
         self.view.mainWin.overallbar.SetRange(self.totaldur*10)
         self.overalltimer.Start(100)
@@ -140,6 +143,14 @@ class Controller:
             self.tmpcoils = copy.deepcopy(self.model.coils)
             self.view.setCoilSelectorList(self.tmpcoils)
 
+    def checkstatus(self, e):
+        sender = e.GetEventObject()
+        isChecked = sender.GetValue()
+
+        if isChecked:
+            pub.subscribe(self.writeStatus, "status.update")
+        else:
+            pub.unsubscribe(self.writeStatus, "status.update")
 
     def changeAmp(self, e):
         choice = self.view.advWin.degaP.coilselector.GetValue()
@@ -156,9 +167,13 @@ class Controller:
     def changeKeep(self, e):
         choice = self.view.advWin.degaP.coilselector.GetValue()
         self.tmpcoils[str(choice)]["Keep"] = self.view.advWin.degaP.textKeep.GetValue()
+
+    def writeStatus(self, status, extra=None):
+        with open("log.txt", "a") as f:
+            f.write("["+datetime.now().strftime("%X")+"] "+str(status) + "\n")
     
     def statusUpdate(self, status, extra=None):
-        self.view.mainWin.status.AppendText(str(status) + "\n")
+        self.view.mainWin.status.AppendText("["+datetime.now().strftime("%X")+"] "+str(status) + "\n")
 
     def CoilsChanged(self, status):
         self.view.mainWin.status.AppendText("Coils set" + "\n")

@@ -69,7 +69,7 @@ class mainWindow(wx.Frame):
         progressbag.AddGrowableRow(4)
         progressbag.Add((-1,-1), pos = (6,0), flag = wx.EXPAND)
         progressbag.Add((-1,-1), pos = (7,0))
-        progressbag.Add((-1,128), pos = (8,0))
+        progressbag.Add((-1,108), pos = (8,0))
 
         self.statusLabel = wx.StaticText(self.panel, wx.ID_ANY, "Status")
         progressbag.Add(self.statusLabel, pos = (9,0))
@@ -77,6 +77,9 @@ class mainWindow(wx.Frame):
                 wx.Size(380,90),
                 wx.TE_MULTILINE | wx.TE_READONLY)
         progressbag.Add(self.status, pos = (10,0))
+        self.saveStatus = wx.CheckBox(self.panel, label = "Save status to log file")
+        self.saveStatus.SetValue(False)
+        progressbag.Add(self.saveStatus, pos = (11,0))
 
 
         # add them to their boxes

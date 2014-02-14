@@ -59,8 +59,8 @@ class Controller:
         for coil in self.model.coils:
             if coil != 'All' and coil != 'Device' and coil != 'Offset':
                 self.totaldur += int(self.model.coils[coil]['Dur']) + int(self.model.coils[coil]['Keep']) + int(4)
-        pub.sendMessage('status.update', status="Total duration %s" % str(self.totaldur) + " s" )
-        self.view.mainWin.overallbar.SetRange(self.totaldur*10)
+        pub.sendMessage('status.update', status="Total duration approx %s" % str(self.totaldur) + " s" )
+        self.view.mainWin.overallbar.SetRange(self.totaldur*10-50)
         self.overalltimer.Start(100)
         self.model.degauss()
 
@@ -84,8 +84,27 @@ class Controller:
                 self.overalltimer.Stop()
                 self.view.mainWin.Destroy()
 
-            
     def onAdvOk(self, e):
+        if self.view.advWin.coilP.rb4.GetValue():
+            fil = self.view.advWin.coilP.text.GetValue()
+            if fil == "":
+                self.view.advWin.nb.SetSelection(0)
+                self.view.showCustomFileAlert()
+            else:
+                self.setModelCoilsfromfile(str(fil))
+                pub.sendMessage("status.update", str(fil), extra = None)
+        elif self.view.advWin.coilP.rb1.GetValue():
+            pub.sendMessage("status.update", status="Inner coils selected")
+            self.setModelCoilsfromfile("innercoils.dict")
+        elif self.view.advWin.coilP.rb2.GetValue():
+            pub.sendMessage("status.update", status="Outer coils selected")
+            self.setModelCoilsfromfile("outercoils.dict")
+        elif self.view.advWin.coilP.rb3.GetValue():
+            pub.sendMessage("status.update", status="All coils selected")
+            self.setModelCoilsfromfile("allcoils.dict")
+        else:
+            # Fehlerfall
+            pass
         self.setModelCoils(self.tmpcoils)
         self.view.advWin.Destroy()
 

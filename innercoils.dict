@@ -29,7 +29,7 @@
         "Dur": 5,
         "Keep": 1,
         "RelayPort": 0,
-        "SwitchPort": 0
+        "VoltageDivider": 1
     },
     "Offset": 0,
     "Device": "Dev1"

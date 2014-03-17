@@ -32,10 +32,20 @@ class Controller:
     def setModelCoilsfromfile(self, dictfile):
         self.model.set_coils_from_file(dictfile)
 
+    def getModelCoilsfromfile(self, dictfile):
+        with open(str(dictfile), "r") as f:
+            coils = json.loads(f.read(), object_pairs_hook =
+                    collections.OrderedDict)
+            if self.model.checkCoils(coils):
+                pub.sendMessage("COILCHANGE", status="Coils read from file")
+                return coils
+            else:
+                pub.sendMessage("COILCHANGE", status = "Error: file wrong")
+
     def AdvBtn(self, e):
         self.tmpcoils = copy.deepcopy(self.model.coils)
         self.view.createAdvWin(self.tmpcoils)
-        self.view.advWin.okbutton.Bind(wx.EVT_BUTTON, self.onAdvOk)
+        self.view.advWin.okbutton.Bind(wx.EVT_BUTTON, self.)
         self.view.advWin.resetbutton.Bind(wx.EVT_BUTTON, self.onAdvReset)
         self.view.advWin.cancelbutton.Bind(wx.EVT_BUTTON, self.onAdvCancel)
         self.view.advWin.degaP.coilselector.Bind(wx.EVT_COMBOBOX, self.coilselection)
@@ -94,21 +104,22 @@ class Controller:
                 self.view.advWin.nb.SetSelection(0)
                 self.view.showCustomFileAlert()
             else:
-                self.setModelCoilsfromfile(str(fil))
+                self.tmpcoils = self.getModelCoilsfromfile(str(fil))
                 pub.sendMessage("status.update", str(fil), extra = None)
         elif self.view.advWin.coilP.rb1.GetValue():
             pub.sendMessage("status.update", status="Inner coils selected")
-            self.setModelCoilsfromfile("innercoils.dict")
+            self.tmpcoils = self.getModelCoilsfromfile("innercoils.dict")
         elif self.view.advWin.coilP.rb2.GetValue():
             pub.sendMessage("status.update", status="Outer coils selected")
-            self.setModelCoilsfromfile("outercoils.dict")
+            self.tmpcoils = self.getModelCoilsfromfile("outercoils.dict")
         elif self.view.advWin.coilP.rb3.GetValue():
             pub.sendMessage("status.update", status="All coils selected")
-            self.setModelCoilsfromfile("allcoils.dict")
+            self.tmpcoils = self.getModelCoilsfromfile("allcoils.dict")
         else:
             # Fehlerfall
             pass
         self.setModelCoils(self.tmpcoils)
+        pub.sendMessage("status.update", status = "coils set")
         self.view.advWin.Destroy()
 
     def onAdvReset(self, e):
@@ -148,21 +159,20 @@ class Controller:
                     self.view.advWin.nb.SetSelection(0)
                     self.view.showCustomFileAlert()
                 else:
-                    self.setModelCoilsfromfile(str(fil))
+                    self.tmpcoils = self.getModelCoilsfromfile(str(fil))
                     pub.sendMessage("status.update", str(fil), extra = None)
             elif self.view.advWin.coilP.rb1.GetValue():
                 pub.sendMessage("status.update", status="Inner coils selected")
-                self.setModelCoilsfromfile("innercoils.dict")
+                self.tmpcoils = self.getModelCoilsfromfile("innercoils.dict")
             elif self.view.advWin.coilP.rb2.GetValue():
                 pub.sendMessage("status.update", status="Outer coils selected")
-                self.setModelCoilsfromfile("outercoils.dict")
+                self.tmpcoils = self.getModelCoilsfromfile("outercoils.dict")
             elif self.view.advWin.coilP.rb3.GetValue():
                 pub.sendMessage("status.update", status="All coils selected")
-                self.setModelCoilsfromfile("allcoils.dict")
+                self.tmpcoils = self.getModelCoilsfromfile("allcoils.dict")
             else:
                 # Fehlerfall
                 pass
-            self.tmpcoils = copy.deepcopy(self.model.coils)
             self.view.setCoilSelectorList(self.tmpcoils)
 
     def checkstatus(self, e):

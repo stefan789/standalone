@@ -9,15 +9,16 @@ class DegaussingWorkerThread(threading.Thread):
     """ 
     dogaussing in own thread so that gui does not lock
     """
-    def __init__(self, coils):
+    def __init__(self, coils, runs):
         threading.Thread.__init__(self)
+        self.runs = runs
         self.running = 1
         self.c = controldeg.controldegauss(coils)
 
     def run(self):
         pub.sendMessage("status.update", status = "Degaussing Thread Worker started")
         if self.running == 1:
-            self.c.degauss()
+            self.c.degauss(self.runs)
 
     def abort(self):
         pub.sendMessage("status.update", status = "degaussing interrupted")
@@ -52,8 +53,8 @@ class Model():
             else:
                 pub.sendMessage("COILCHANGE", status = "Error: file wrong")
     
-    def degauss(self):
-        self.degaussingcontrol = DegaussingWorkerThread(self.coils)
+    def degauss(self, runs):
+        self.degaussingcontrol = DegaussingWorkerThread(self.coils, runs)
         self.degaussingcontrol.start()
 
     def interruptdegauss(self):

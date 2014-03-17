@@ -54,15 +54,18 @@ class Controller:
 
     def StartBtn(self, e):
         pub.sendMessage('status.update', status="Started: %s" % datetime.now().strftime("%d.%m.%Y - %X"))
+        runs = self.view.mainWin.runNrCtrl.GetValue()
+        pub.sendMessage('status.update', status="Nur of runs %s" % str(runs))
         self.totalcount = 0
         self.totaldur = 2
         for coil in self.model.coils:
             if coil != 'All' and coil != 'Device' and coil != 'Offset':
                 self.totaldur += int(self.model.coils[coil]['Dur']) + int(self.model.coils[coil]['Keep']) + int(4)
+        self.totaldur = self.totaldur * runs
         pub.sendMessage('status.update', status="Total duration approx %s" % str(self.totaldur) + " s" )
         self.view.mainWin.overallbar.SetRange(self.totaldur*10-50)
         self.overalltimer.Start(100)
-        self.model.degauss()
+        self.model.degauss(runs)
 
     def OnTimer(self, event):
         self.totalcount += 1

@@ -43,7 +43,19 @@ class mainWindow(wx.Frame):
         abortbuttonSizer.Add((-1,-1), wx.ALIGN_RIGHT|wx.EXPAND)
         controlbag.Add(abortbuttonSizer, pos = (3,0), flag = wx.EXPAND)
         controlbag.AddGrowableRow(3)
-        controlbag.Add((-1,100), pos = (4,0))
+        controlbag.Add((-1,35), pos = (4,0))
+
+        # number of runs
+        runNrSizer = wx.BoxSizer(wx.HORIZONTAL)
+        runLabel = wx.StaticText(self.panel, label = "Nr of runs")
+        self.runNrCtrl = wx.SpinCtrl(self.panel, value = '1', size=(60,-1), min=1, max=5)
+        runNrSizer.Add((-1,-1), wx.ALIGN_LEFT|wx.EXPAND)
+        runNrSizer.Add(runLabel, flag=wx.ALIGN_CENTER)
+        runNrSizer.Add((30,-1))
+        runNrSizer.Add(self.runNrCtrl, flag=wx.ALIGN_CENTER)
+        runNrSizer.Add((-1,-1), wx.ALIGN_RIGHT|wx.EXPAND)
+        controlbag.Add(runNrSizer, pos=(5,0), flag = wx.ALIGN_LEFT|wx.EXPAND)
+        controlbag.Add((-1,37), pos=(6,0))
 
         # create advanced settings button and add to advbuttonsizer then add to controlbag
         advbuttonSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -51,7 +63,7 @@ class mainWindow(wx.Frame):
         advbuttonSizer.Add((-1,-1), wx.EXPAND)
         advbuttonSizer.Add(self.advbtn, wx.ALIGN_LEFT)
         advbuttonSizer.Add((-1,-1), wx.EXPAND)
-        controlbag.Add(advbuttonSizer, pos=(5,0), flag = wx.ALIGN_LEFT|wx.EXPAND)
+        controlbag.Add(advbuttonSizer, pos=(7,0), flag = wx.ALIGN_LEFT|wx.EXPAND)
 
         
         # create overall progress bar and add to progressbag

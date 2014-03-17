@@ -1,50 +1,74 @@
 {
-    "A-X": {
-        "Amp": 8.9,
-        "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
-        "RelayPort": 3,
-        "VoltageDivider": 2
-    },
-    "A-Z": {
-        "Amp": 9.2,
-        "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
-        "RelayPort": 5,
-        "VoltageDivider": 2
-    },
-    "A-Y": {
-        "Amp": 9.6,
-        "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
-        "RelayPort": 4,
-        "VoltageDivider": 2
-    },
     "I-X": {
-        "Amp": 7.9,
+        "Amp": 8.5,
         "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
-        "RelayPort": 1,
+        "Dur": 5,
+        "Keep": 1,
+        "RelayPort": 0,
         "VoltageDivider": 3
     },
     "I-Z": {
-        "Amp": 8.5,
+        "Amp": 9.0,
         "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
+        "Dur": 5,
+        "Keep": 1,
         "RelayPort": 2,
         "VoltageDivider": 3
     },
     "I-Y": {
-        "Amp": 9,
+        "Amp": 9.8,
         "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
+        "Dur": 5,
+        "Keep": 1,
+        "RelayPort": 1,
+        "VoltageDivider": 3
+    },
+    "A-X": {
+        "Amp": 9.2,
+        "Freq": 10,
+        "Dur": 5,
+        "Keep": 1,
+        "RelayPort": 3,
+        "VoltageDivider": 2
+    },
+    "A-Z": {
+        "Amp": 9.3,
+        "Freq": 10,
+        "Dur": 5,
+        "Keep": 1,
+        "RelayPort": 5,
+        "VoltageDivider": 2
+    },
+    "A-Y": {
+        "Amp": 9.8,
+        "Freq": 10,
+        "Dur": 5,
+        "Keep": 1,
+        "RelayPort": 4,
+        "VoltageDivider": 2
+    },
+    "I-X2": {
+        "Amp": 8.5,
+        "Freq": 10,
+        "Dur": 5,
+        "Keep": 1,
         "RelayPort": 0,
+        "VoltageDivider": 3
+    },
+    "I-Z2": {
+        "Amp": 9.0,
+        "Freq": 10,
+        "Dur": 5,
+        "Keep": 1,
+        "RelayPort": 2,
+        "VoltageDivider": 3
+    },
+    "I-Y2": {
+        "Amp": 9.8,
+        "Freq": 10,
+        "Dur": 5,
+        "Keep": 1,
+        "RelayPort": 1,
         "VoltageDivider": 3
     },
     "All": {

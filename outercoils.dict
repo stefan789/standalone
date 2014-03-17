@@ -2,32 +2,32 @@
     "A-X": {
         "Amp": 8.9,
         "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
+        "Dur": 100,
+        "Keep": 10,
         "RelayPort": 3,
         "VoltageDivider": 2
     },
     "A-Z": {
         "Amp": 9,
         "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
+        "Dur": 100,
+        "Keep": 10,
         "RelayPort": 5,
         "VoltageDivider": 2
     },
     "A-Y": {
         "Amp": 9.5,
         "Freq": 10,
-        "Dur": 10,
-        "Keep": 2,
+        "Dur": 100,
+        "Keep": 10,
         "RelayPort": 4,
         "VoltageDivider": 2
     },
     "All": {
         "Amp": 0,
         "Freq": 16,
-        "Dur": 5,
-        "Keep": 1,
+        "Dur": 100,
+        "Keep": 10,
         "RelayPort": 0,
         "VoltageDivider": 3
     },

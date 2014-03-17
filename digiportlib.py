@@ -12,12 +12,14 @@ class VoltageDivider():
         ddat = np.zeros(4, dtype = np.uint8)
         ddat[0] = 1
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
+        time.sleep(1)
 
     def setnr(self, nr):
         self.resetall()
         ddat = np.zeros(4, dtype = np.uint8)
         ddat[nr] = 1
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
+        time.sleep(1)
         
 
 class DigitalInput():
@@ -44,6 +46,7 @@ class DigitalOutput():
         time.sleep(1)
         ddat[nr] = 0
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
+        time.sleep(1)
 
 class SwitchCoil():
     def __init__(self):

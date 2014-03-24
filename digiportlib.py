@@ -59,10 +59,10 @@ class SwitchCoil():
         curstate = self.di.read()
         if 1 in curstate:
             curon = np.where(curstate==1)[0]
-            pub.sendMessage("status.update", status="Relaisstate: %s" % str(self.di.read()))
             #print curon
             for a in curon:
                 self.do.switch(a)
+        pub.sendMessage("status.update", status="Relaisstate: %s" % str(self.di.read()))
         #print self.di.read()
 
     def activate(self, nr):

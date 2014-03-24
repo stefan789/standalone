@@ -3,6 +3,7 @@ import view
 import wx
 import copy
 import collections
+import json
 from datetime import datetime
 
 #from wx.lib.pubsub import setupkwargs
@@ -45,7 +46,7 @@ class Controller:
     def AdvBtn(self, e):
         self.tmpcoils = copy.deepcopy(self.model.coils)
         self.view.createAdvWin(self.tmpcoils)
-        self.view.advWin.okbutton.Bind(wx.EVT_BUTTON, self.)
+        self.view.advWin.okbutton.Bind(wx.EVT_BUTTON, self.onAdvOk)
         self.view.advWin.resetbutton.Bind(wx.EVT_BUTTON, self.onAdvReset)
         self.view.advWin.cancelbutton.Bind(wx.EVT_BUTTON, self.onAdvCancel)
         self.view.advWin.degaP.coilselector.Bind(wx.EVT_COMBOBOX, self.coilselection)

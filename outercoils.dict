@@ -1,6 +1,6 @@
 {
     "A-X": {
-        "Amp": 8.9,
+        "Amp": 9.8,
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,
@@ -8,7 +8,7 @@
         "VoltageDivider": 2
     },
     "A-Z": {
-        "Amp": 9,
+        "Amp": 9.8,
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,
@@ -16,7 +16,7 @@
         "VoltageDivider": 2
     },
     "A-Y": {
-        "Amp": 9.5,
+        "Amp": 9.8,
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,

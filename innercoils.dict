@@ -1,26 +1,26 @@
 {
     "I-X": {
-        "Amp": 7.7,
+        "Amp": 9.8,
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,
-        "RelayPort": 0,
+        "RelayPort": 3,
         "VoltageDivider": 3
     },
     "I-Z": {
-        "Amp": 8.2,
+        "Amp": 9.8,
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,
-        "RelayPort": 2,
+        "RelayPort": 5,
         "VoltageDivider": 3
     },
     "I-Y": {
-        "Amp": 9,
+        "Amp": 9.8,
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,
-        "RelayPort": 1,
+        "RelayPort": 4,
         "VoltageDivider": 3
     },
     "All": {

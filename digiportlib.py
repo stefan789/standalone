@@ -1,6 +1,7 @@
 import numpy as np
 import nidaqmx
 import time
+from wx.lib.pubsub import pub
 
 class VoltageDivider():
     def __init__(self):
@@ -24,7 +25,7 @@ class VoltageDivider():
 
 class DigitalInput():
     def __init__(self):
-        self.input_str = r"Dev1/port0/line24:29"
+        self.input_str = r"Dev1/port0/line24:29,Dev1/port2/line0:7,Dev1/port1/line0:2"
         self.ditask = nidaqmx.DigitalInputTask()
         self.ditask.create_channel(self.input_str)
 
@@ -51,13 +52,14 @@ class DigitalOutput():
 class SwitchCoil():
     def __init__(self):
         self.di = DigitalInput()
-        self.do = DigitalOutput("0:5")
-        self.nrchans = 6
+        self.do = DigitalOutput("0:18")
+        self.nrchans = 19
 
     def alloff(self):
         curstate = self.di.read()
         if 1 in curstate:
             curon = np.where(curstate==1)[0]
+            pub.sendMessage("status.update", status="Relaisstate: %s" % str(self.di.read()))
             #print curon
             for a in curon:
                 self.do.switch(a)
@@ -77,6 +79,7 @@ class SwitchCoil():
             if curstate[nr] == 1:
                 pass
             if curstate[nr] == 0:
-                 self.do.switch(nr)
+                self.do.switch(nr)
+                pub.sendMessage("status.update", status="Relaisstate: %s" % str(self.di.read()))
             #print self.di.read()
 

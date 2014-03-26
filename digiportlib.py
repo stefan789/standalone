@@ -20,12 +20,12 @@ class VoltageDivider():
         ddat = np.zeros(4, dtype = np.uint8)
         ddat[nr] = 1
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
-        time.sleep(1)
+        time.sleep(3)
         
 
 class DigitalInput():
     def __init__(self):
-        self.input_str = r"Dev1/port0/line24:29,Dev1/port2/line0:7,Dev1/port1/line0:2"
+        self.input_str = r"Dev1/port0/line24:31,Dev1/port2/line0:7,Dev1/port1/line0:2"
         self.ditask = nidaqmx.DigitalInputTask()
         self.ditask.create_channel(self.input_str)
 
@@ -62,7 +62,7 @@ class SwitchCoil():
             #print curon
             for a in curon:
                 self.do.switch(a)
-        pub.sendMessage("status.update", status="Relaisstate: %s" % str(self.di.read()))
+        pub.sendMessage("status.update", status="Relay states: %s" % str(self.di.read()))
         #print self.di.read()
 
     def activate(self, nr):
@@ -80,6 +80,6 @@ class SwitchCoil():
                 pass
             if curstate[nr] == 0:
                 self.do.switch(nr)
-                pub.sendMessage("status.update", status="Relaisstate: %s" % str(self.di.read()))
+        pub.sendMessage("status.update", status="Relay states: %s" % str(self.di.read()))
             #print self.di.read()
 

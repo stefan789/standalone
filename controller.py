@@ -66,7 +66,7 @@ class Controller:
     def StartBtn(self, e):
         pub.sendMessage('status.update', status="Started: %s" % datetime.now().strftime("%d.%m.%Y - %X"))
         runs = self.view.mainWin.runNrCtrl.GetValue()
-        pub.sendMessage('status.update', status="Nur of runs %s" % str(runs))
+        pub.sendMessage('status.update', status="Nr of runs %s" % str(runs))
         self.totalcount = 0
         self.totaldur = 2
         for coil in self.model.coils:
@@ -106,7 +106,7 @@ class Controller:
                 self.view.showCustomFileAlert()
             else:
                 self.tmpcoils = self.getModelCoilsfromfile(str(fil))
-                pub.sendMessage("status.update", str(fil), extra = None)
+                pub.sendMessage("status.update", status=str(fil))
         elif self.view.advWin.coilP.rb1.GetValue():
             pub.sendMessage("status.update", status="Inner coils selected")
             self.tmpcoils = self.getModelCoilsfromfile("innercoils.dict")
@@ -120,7 +120,7 @@ class Controller:
             # Fehlerfall
             pass
         self.setModelCoils(self.tmpcoils)
-        pub.sendMessage("status.update", status = "coils set")
+        #pub.sendMessage("status.update", status = "Coils set")
         self.view.advWin.Destroy()
 
     def onAdvReset(self, e):
@@ -161,7 +161,7 @@ class Controller:
                     self.view.showCustomFileAlert()
                 else:
                     self.tmpcoils = self.getModelCoilsfromfile(str(fil))
-                    pub.sendMessage("status.update", str(fil), extra = None)
+                    pub.sendMessage("status.update", status=str(fil))
             elif self.view.advWin.coilP.rb1.GetValue():
                 pub.sendMessage("status.update", status="Inner coils selected")
                 self.tmpcoils = self.getModelCoilsfromfile("innercoils.dict")

@@ -41,3 +41,6 @@ class View():
 
     def showCustomFileAlert(self):
         wx.MessageBox("No file specified", "Error", wx.OK)
+
+    def showRunningAlert(self):
+        wx.MessageBox("Degaussing in progress", "Error", wx.OK)

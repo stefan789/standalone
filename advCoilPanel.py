@@ -18,11 +18,13 @@ class advCoilPanel(wx.Panel):
         self.rb2 = wx.RadioButton(self.panel)
         self.rb3 = wx.RadioButton(self.panel)
         self.rb4 = wx.RadioButton(self.panel)
+        self.rb5 = wx.RadioButton(self.panel)
 
         self.labelrb1 = wx.StaticText(self.panel, label = "Inner coils")
-        self.labelrb2 = wx.StaticText(self.panel, label = "Outer coils")
-        self.labelrb3 = wx.StaticText(self.panel, label = "All coils")
-        self.labelrb4 = wx.StaticText(self.panel, label = "Custom coil file")
+        self.labelrb2 = wx.StaticText(self.panel, label = "Middle coils")
+        self.labelrb3 = wx.StaticText(self.panel, label = "Outer coils")
+        self.labelrb4 = wx.StaticText(self.panel, label = "All coils")
+        self.labelrb5 = wx.StaticText(self.panel, label = "Custom coil file")
         self.text = wx.TextCtrl(self.panel)
 
         bagSizer.Add((340,-1), pos = (0,1))
@@ -31,15 +33,17 @@ class advCoilPanel(wx.Panel):
         bagSizer.Add(self.rb2, pos = (2,0))
         bagSizer.Add(self.rb3, pos = (3,0))
         bagSizer.Add(self.rb4, pos = (4,0))
+        bagSizer.Add(self.rb5, pos = (5,0))
 
 
         bagSizer.Add(self.labelrb1, pos = (1,1), flag = wx.ALIGN_CENTER_VERTICAL)
         bagSizer.Add(self.labelrb2, pos = (2,1), flag = wx.ALIGN_CENTER_VERTICAL)
         bagSizer.Add(self.labelrb3, pos = (3,1), flag = wx.ALIGN_CENTER_VERTICAL)
         bagSizer.Add(self.labelrb4, pos = (4,1), flag = wx.ALIGN_CENTER_VERTICAL)
-        bagSizer.Add(self.text, pos = (5,1), flag =
+        bagSizer.Add(self.labelrb5, pos = (5,1), flag = wx.ALIGN_CENTER_VERTICAL)
+        bagSizer.Add(self.text, pos = (6,1), flag =
                 wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)
-        bagSizer.Add((-1,1), pos = (6,1))
+        bagSizer.Add((-1,1), pos = (7,1))
 
         coilbox.Add(bagSizer, wx.EXPAND)
 

@@ -1,0 +1,20 @@
+{
+    "P": {
+        "Amp": 1.7,
+        "Freq": 10,
+        "Dur": 300,
+        "Keep": 10,
+        "RelayPort": 6,
+        "VoltageDivider": 1
+    },
+    "All": {
+        "Amp": 0,
+        "Freq": 16,
+        "Dur": 5,
+        "Keep": 1,
+        "RelayPort": 0,
+        "VoltageDivider": 1
+    },
+    "Offset": 0,
+    "Device": "Dev1"
+}

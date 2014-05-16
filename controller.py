@@ -59,6 +59,7 @@ class Controller:
         self.view.advWin.coilP.rb2.Bind(wx.EVT_RADIOBUTTON, self.radioselection)
         self.view.advWin.coilP.rb3.Bind(wx.EVT_RADIOBUTTON, self.radioselection)
         self.view.advWin.coilP.rb4.Bind(wx.EVT_RADIOBUTTON, self.radioselection)
+        self.view.advWin.coilP.rb5.Bind(wx.EVT_RADIOBUTTON, self.radioselection)
 
         self.view.advWin.nb.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED,
                 self.nbpagechange)
@@ -150,7 +151,8 @@ class Controller:
         state2 = self.view.advWin.coilP.rb2.GetValue()
         state3 = self.view.advWin.coilP.rb3.GetValue()
         state4 = self.view.advWin.coilP.rb4.GetValue()
-        if state4 == True:
+        state5 = self.view.advWin.coilP.rb5.GetValue()
+        if state5 == True:
             self.view.showAdvTextLine(True)
         else:
             self.view.advWin.coilP.text.SetValue("")
@@ -158,7 +160,7 @@ class Controller:
 
     def nbpagechange(self, e):
         if self.view.advWin.nb.GetSelection() == 1:
-            if self.view.advWin.coilP.rb4.GetValue():
+            if self.view.advWin.coilP.rb5.GetValue():
                 fil = self.view.advWin.coilP.text.GetValue()
                 if fil == "":
                     self.view.advWin.nb.SetSelection(0)
@@ -170,9 +172,12 @@ class Controller:
                 pub.sendMessage("status.update", status="Inner coils selected")
                 self.tmpcoils = self.getModelCoilsfromfile("innercoils.dict")
             elif self.view.advWin.coilP.rb2.GetValue():
+                pub.sendMessage("status.update", status="Middle coils selected")
+                self.tmpcoils = self.getModelCoilsfromfile("middlecoils.dict")
+            elif self.view.advWin.coilP.rb3.GetValue():
                 pub.sendMessage("status.update", status="Outer coils selected")
                 self.tmpcoils = self.getModelCoilsfromfile("outercoils.dict")
-            elif self.view.advWin.coilP.rb3.GetValue():
+            elif self.view.advWin.coilP.rb4.GetValue():
                 pub.sendMessage("status.update", status="All coils selected")
                 self.tmpcoils = self.getModelCoilsfromfile("allcoils.dict")
             else:

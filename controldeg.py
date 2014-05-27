@@ -18,9 +18,10 @@ class controldegauss():
         
         self.dega = deg.Degausser(str(self.dev),0)
 
-        self.swc = digilib.SwitchCoil()
+        
+        self.swc = digilib.SwitchCoil(str(self.dev))
         self.swc.alloff()
-        self.vd = digilib.VoltageDivider()
+        self.vd = digilib.VoltageDivider(str(self.dev))
         self.vd.resetall()
         time.sleep(1)
         self._running = 1

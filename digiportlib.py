@@ -4,8 +4,9 @@ import time
 from wx.lib.pubsub import pub
 
 class VoltageDivider():
-    def __init__(self):
-        self.output_str = r"Dev1/port0/line19:22"
+    def __init__(self, dev):
+        self.dev = dev
+        self.output_str = dev+"/port0/line19:22"
         self.dotask = nidaqmx.DigitalOutputTask()
         self.dotask.create_channel(self.output_str)
     
@@ -24,8 +25,9 @@ class VoltageDivider():
         
 
 class DigitalInput():
-    def __init__(self):
-        self.input_str = r"Dev1/port0/line24:31,Dev1/port2/line0:7,Dev1/port1/line0:2"
+    def __init__(self, dev):
+        self.dev = dev
+        self.input_str = dev+"/port0/line24:31,"+dev+"/port2/line0:7,"+dev+"/port1/line0:2"
         self.ditask = nidaqmx.DigitalInputTask()
         self.ditask.create_channel(self.input_str)
 
@@ -33,9 +35,10 @@ class DigitalInput():
         return self.ditask.read(1)[0][0]
 
 class DigitalOutput():
-    def __init__(self, channels):
+    def __init__(self, dev, channels):
+        self.dev = dev
         self.nrchans = int(channels.split(":")[1]) - int(channels.split(":")[0]) + 1
-        self.output_str = r"Dev1/port0/line" + str(channels)
+        self.output_str = dev+"/port0/line" + str(channels)
         self.dotask = nidaqmx.DigitalOutputTask()
         self.dotask.create_channel(self.output_str, name = "line"
                 +str(channels))
@@ -50,9 +53,9 @@ class DigitalOutput():
         time.sleep(1)
 
 class SwitchCoil():
-    def __init__(self):
-        self.di = DigitalInput()
-        self.do = DigitalOutput("0:18")
+    def __init__(self, dev):
+        self.di = DigitalInput(dev)
+        self.do = DigitalOutput(dev, "0:18")
         self.nrchans = 19
 
     def alloff(self):

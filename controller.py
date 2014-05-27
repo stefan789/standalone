@@ -116,9 +116,12 @@ class Controller:
             pub.sendMessage("status.update", status="Inner coils selected")
             self.tmpcoils = self.getModelCoilsfromfile("innercoils.dict")
         elif self.view.advWin.coilP.rb2.GetValue():
+            pub.sendMessage("status.update", status="Middle coils selected")
+            self.tmpcoils = self.getModelCoilsfromfile("middlecoils.dict")
+        elif self.view.advWin.coilP.rb3.GetValue():
             pub.sendMessage("status.update", status="Outer coils selected")
             self.tmpcoils = self.getModelCoilsfromfile("outercoils.dict")
-        elif self.view.advWin.coilP.rb3.GetValue():
+        elif self.view.advWin.coilP.rb4.GetValue():
             pub.sendMessage("status.update", status="All coils selected")
             self.tmpcoils = self.getModelCoilsfromfile("allcoils.dict")
         else:

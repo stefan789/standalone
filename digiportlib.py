@@ -6,28 +6,28 @@ from wx.lib.pubsub import pub
 class VoltageDivider():
     def __init__(self, dev):
         self.dev = dev
-        self.output_str = dev+"/port0/line19:22"
+        self.output_str = dev+"/port0/line16:23"
         self.dotask = nidaqmx.DigitalOutputTask()
         self.dotask.create_channel(self.output_str)
     
     def resetall(self):
-        ddat = np.zeros(4, dtype = np.uint8)
-        ddat[0] = 1
+        ddat = np.ones(7, dtype = np.uint8)
+        ddat[6] = 0
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
         time.sleep(1)
 
     def setnr(self, nr):
         self.resetall()
-        ddat = np.zeros(4, dtype = np.uint8)
-        ddat[nr] = 1
+        ddat = np.ones(7, dtype = np.uint8)
+        ddat[nr] = 0
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
-        time.sleep(3)
+        time.sleep(1)
         
 
 class DigitalInput():
     def __init__(self, dev):
         self.dev = dev
-        self.input_str = dev+"/port0/line24:31,"+dev+"/port2/line0:7,"+dev+"/port1/line0:2"
+        self.input_str = dev+"/port0/line24:31,"+dev+"/port2/line0:7"
         self.ditask = nidaqmx.DigitalInputTask()
         self.ditask.create_channel(self.input_str)
 
@@ -44,19 +44,19 @@ class DigitalOutput():
                 +str(channels))
 
     def switch(self, nr):
-        ddat = np.zeros(self.nrchans, dtype = np.uint8)
-        ddat[nr] = 1
+        ddat = np.ones(self.nrchans, dtype = np.uint8)
+        ddat[nr] = 0
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
         time.sleep(1)
-        ddat[nr] = 0
+        ddat[nr] = 1
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
         time.sleep(1)
 
 class SwitchCoil():
     def __init__(self, dev):
         self.di = DigitalInput(dev)
-        self.do = DigitalOutput(dev, "0:18")
-        self.nrchans = 19
+        self.do = DigitalOutput(dev, "0:15")
+        self.nrchans = 16
 
     def alloff(self):
         curstate = self.di.read()

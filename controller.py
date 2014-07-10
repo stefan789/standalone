@@ -104,7 +104,7 @@ class Controller:
                 self.view.mainWin.Destroy()
 
     def onAdvOk(self, e):
-        if self.view.advWin.coilP.rb4.GetValue():
+        if self.view.advWin.coilP.rb5.GetValue():
             fil = self.view.advWin.coilP.text.GetValue()
             if fil == "":
                 self.view.advWin.nb.SetSelection(0)

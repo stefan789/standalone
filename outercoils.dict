@@ -1,6 +1,6 @@
 {
     "A-X": {
-        "Amp": 9.8,
+         "Amp": 9.8,
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,
@@ -12,7 +12,7 @@
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,
-        "RelayPort": 5,
+        "RelayPort": 4,
         "VoltageDivider": 2
     },
     "A-Y": {
@@ -20,8 +20,8 @@
         "Freq": 10,
         "Dur": 100,
         "Keep": 10,
-        "RelayPort": 4,
-        "VoltageDivider": 2
+        "RelayPort": 7,
+        "VoltageDivider": 3
     },
     "All": {
         "Amp": 0,

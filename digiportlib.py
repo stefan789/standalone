@@ -11,18 +11,21 @@ class VoltageDivider():
         self.dotask.create_channel(self.output_str)
     
     def resetall(self):
-        ddat = np.ones(7, dtype = np.uint8)
+        ddat = np.ones(8, dtype = np.uint8)
         ddat[6] = 0
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
         time.sleep(1)
+        ddat[6] = 1
+        self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
 
     def setnr(self, nr):
         self.resetall()
-        ddat = np.ones(7, dtype = np.uint8)
+        ddat = np.ones(8, dtype = np.uint8)
         ddat[nr] = 0
         self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")
         time.sleep(1)
-        
+        ddat[nr] = 1
+        self.dotask.write(ddat, auto_start = True, layout = "group_by_channel")        
 
 class DigitalInput():
     def __init__(self, dev):
